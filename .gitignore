@@ -3,5 +3,5 @@
 .vscode
 .csgods
 .fast_parquet_build
-.desktop
-.discovery
+.desktop.ini 
+.discovery.ipynb
