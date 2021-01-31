@@ -35,6 +35,7 @@ for parquet in parquets:
     if(parquet.split('/')[1] == 'bronze'):
         parquetName = parquet.split('/bronze/')[1]
         if(parquetName not in currentBronzeParquets):
+            print("{} added to bronze!")
             bucket.download_file(parquet, 'data/matches/bronze/'+parquetName)
 
     # Importing Silver 
@@ -48,4 +49,5 @@ for parquet in parquets:
             os.makedirs(os.path.dirname(dirName))
             
         if(parquetName not in currentSilverParquets):
+            print("{} added to silver!")
             bucket.download_file(parquet, dirName+parquetName)
