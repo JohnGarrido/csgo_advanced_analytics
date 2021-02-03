@@ -75,12 +75,11 @@ for link in df['Link'].values:
         versus.append(np.nan)
         
 df['Download'] = download_links
-
 df['Event'] = events
-
 df['Date'] = dates 
-
 df['Match'] = versus
+
+df.sort_values(by='Date', ascending=False)
 
 df.dropna(inplace=True)
 
