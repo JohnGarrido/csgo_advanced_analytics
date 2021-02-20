@@ -14,7 +14,7 @@ headers = {"User-Agent":
 
 TEAM_ID = "8297"
 
-# The team's match page is splitted through out "offsets", the current threshold is 300 for average and to avoid possible old demos issues
+# The team's match page is splitted out "offsets", the current threshold is 300 for average and to avoid possible old demos issues
 
 OFFSETS = [0, 100, 200, 300]
 
@@ -76,10 +76,10 @@ for link in df['Link'].values:
         
 df['Download'] = download_links
 df['Event'] = events
-df['Date'] = dates 
+df['Date'] = pd.to_datetime(dates) 
 df['Match'] = versus
 
-df.sort_values(by='Date', ascending=False)
+df.sort_values(by='Date', ascending=False, inplace=True)
 
 df.dropna(inplace=True)
 
