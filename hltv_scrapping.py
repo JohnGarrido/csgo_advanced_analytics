@@ -74,7 +74,7 @@ def create_hltv(matches):
 
             # Scraping download links
             download_link = re.findall(r'href=\"/download/(.*?)\"', str(soup.find_all(class_='stream-box')))[0]
-            download_links.append("https://www.hltv.org"+download_link+"/")
+            download_links.append("https://www.hltv.org/"+download_link+"/")
 
             # Scraping match dates
             date = re.findall(r'>(.*?)</div>', str(soup.find_all(class_='date')))[0]
