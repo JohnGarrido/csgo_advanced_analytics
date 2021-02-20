@@ -131,7 +131,7 @@ def add_new_matches():
         build_new_matches = create_hltv(new_matches)
 
         df = pd.concat([build_new_matches, hltv])
-        df.to_csv('data/downloads/furia_games_hltv.csv', index=False)
+        df.to_csv(HLTV, index=False)
 
     for match in outer_matches:
         print("{} was added to HLTV".format(match.split('/')[-1]))
@@ -143,6 +143,6 @@ if os.path.exists(HLTV):
     
 else:
     table = create_hltv(get_team_matches())
-    table.to_csv('data/downloads/furia_games_hltv.csv')
+    table.to_csv(HLTV)
 
 
