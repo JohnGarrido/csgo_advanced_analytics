@@ -24,19 +24,21 @@ for file in bucket.objects.all():
     if(file.key[-7:] == 'parquet'):
         parquets.append(file.key)
 
-currentBronzeParquets = os.listdir('data/matches/bronze/')
-currentSilverParquets = os.listdir('data/matches/silver/')
+current_bronze_parquets = os.listdir('data/matches/bronze/')
+#current_silver_parquets = os.listdir('data/matches/silver/')
 
 
 for parquet in parquets:
 
+    new_parquets = []
     # Importing Bronze
 
     if(parquet.split('/')[1] == 'bronze'):
         parquetName = parquet.split('/bronze/')[1]
-        if(parquetName not in currentBronzeParquets):
-            print("{} added to bronze!")
+        if(parquetName not in current_bronze_parquets):
+            print("{} added to bronze!".format(parquetName))
             bucket.download_file(parquet, 'data/matches/bronze/'+parquetName)
+            new_parquets.append(parquetName)
 
     # Importing Silver 
 
@@ -44,10 +46,20 @@ for parquet in parquets:
 
         parquetName = 'part'+parquet.split('part')[1]
         dirName = 'data/matches/'+parquet.split('part')[0].split("pipelineExport/")[1]
+
+        current_silver_parquets = os.listdir(dirName)
  
         if(not os.path.exists(os.path.dirname(dirName))):
             os.makedirs(os.path.dirname(dirName))
             
-        if(parquetName not in currentSilverParquets):
-            print("{} added to silver!")
+        if(parquetName not in current_silver_parquets):
+            print("{} added to silver!".format(parquetName))
             bucket.download_file(parquet, dirName+parquetName)
+            new_parquets.append(parquetName)
+
+if(len(new_parquets) == 0):
+    print("There's no new matches data do be added!")
+
+else:
+    print("You have {} new parquets on your local data folder!".format(len(new_parquets)))
+    

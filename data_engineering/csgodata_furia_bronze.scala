@@ -18,17 +18,22 @@ val mountPath = "/mnt/"+mountName
 
 // COMMAND ----------
 
-/// dbutils.fs.mount(exportPath, mountPath)
-
-
-// COMMAND ----------
-
 import org.apache.spark.sql.functions._
 
 // COMMAND ----------
 
-val inboundFile = "/FileStore/tables/json_raw/"
+var checkMount = dbutils.fs.ls(mountPath)
+var check = checkMount.map(_.isDir)
 
+if(check(0) == true){
+  print("Already mounted\n")
+} else {
+  dbutils.fs.mount(exportPath, mountPath)
+}
+
+// COMMAND ----------
+
+val inboundFile = "/FileStore/tables/json_raw/"
 val bronzeDF = spark.read.option("multiline",true).json(inboundFile)
 
 // COMMAND ----------
@@ -53,7 +58,10 @@ if(!spark.catalog.tableExists(tableId)) {
        .saveAsTable(tableId)
   
 } else {
- bronzeDF.createOrReplaceTempView("vw_source")
+ val schema = spark.sql("SELECT * FROM csgodata_furia_bronze.ids").schema // avoid differantiations on schema 
+ val incomingFile = spark.read.option("multiline",true).schema(schema).json(inboundFile)  
+
+ incomingFile.createTempView("vw_source") 
  spark.sql(s"""
    MERGE INTO ${tableId} as target
    USING vw_source as source
