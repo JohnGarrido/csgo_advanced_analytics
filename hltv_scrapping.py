@@ -112,7 +112,7 @@ def create_hltv(matches):
     df['Match'] = versus
     df['Maps'] = picks
 
-    df = df[['Match, Maps, Date, Event, Download']]
+    df = df[['Match', 'Maps', 'Date', 'Event','Link', 'Download']]
 
     return df
 
@@ -133,7 +133,7 @@ def add_new_matches():
         build_new_matches = create_hltv(new_matches)
 
         df = pd.concat([build_new_matches, hltv])
-        df = df[['Match, Maps, Date, Event, Download']]
+        df = df[['Match', 'Maps', 'Date', 'Event','Link', 'Download']]
         df.to_csv(HLTV, index=False)
 
     for match in outer_matches:
